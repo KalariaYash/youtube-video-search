@@ -23,11 +23,12 @@ class InputTextField extends React.Component {
   }
 
   render() {
+    const {errorMessage,value} = this.state;
     return (
       <React.Fragment>
         <TextField
           label={this.props.label}
-          value={this.state.value}
+          value={value}
           margin="normal"
           variant="outlined"
           style={{ width: '100%' }}
@@ -35,7 +36,7 @@ class InputTextField extends React.Component {
           onBlur={this.validationForName}
           onFocus={() => this.setState({ errorMessage: '' })}
         />
-        {this.state.errorMessage.length > 0 && <div style={{ color: 'red' }}> {this.state.errorMessage} </div>}
+        {errorMessage.length > 0 && <div style={{ color: 'red' }}> {errorMessage} </div>}
       </React.Fragment>
     );
   }

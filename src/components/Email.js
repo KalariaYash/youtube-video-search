@@ -8,20 +8,22 @@ class Email extends React.Component {
     errorMessage:''
   }
   validationForEmail = () => {
-    if (!emailRegex.test(this.state.value)) {
+    const {value} = this.state;
+    if (!emailRegex.test(value)) {
       this.setState({ errorMessage: "Please enter valid email address" });
     }
     else {
-      this.props.updatUserInfo(this.props.nameOfStateProperty, this.state.value);
+      this.props.updatUserInfo(this.props.nameOfStateProperty, value);
     }
   }
 
   render() {
+    const {errorMessage,value} = this.state;
     return (
       <React.Fragment>
         <TextField
           label={this.props.label}
-          value={this.state.value}
+          value={value}
           margin="normal"
           variant="outlined"
           style={{ width: '100%' }}
@@ -29,7 +31,7 @@ class Email extends React.Component {
           onBlur={this.validationForEmail}
           onFocus={() => this.setState({ errorMessage: '' })}
         />
-        {this.state.errorMessage.length > 0 && <div style={{ color: 'red' }}> {this.state.errorMessage} </div>}
+        {errorMessage.length > 0 && <div style={{ color: 'red' }}> {errorMessage} </div>}
       </React.Fragment>
     );
   }

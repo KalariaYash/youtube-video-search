@@ -19,7 +19,8 @@ class Signup extends React.Component {
   }
 
   handleOnSubmit = () => {
-    if (this.state.firstName == '' || this.state.middleName == '' || this.state.lastName == '' || this.state.email == '' || this.state.password == '') {
+    const {firstName, middleName, lastName, email, password} = this.state;
+    if (firstName == '' || middleName == '' || lastName == '' || email == '' || password == '') {
       alert("Please fill the data correctly");
     }
     else {

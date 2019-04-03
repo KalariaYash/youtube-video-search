@@ -9,6 +9,7 @@ class PasswordField extends React.Component {
   }
 
   validationForPassword = () => {
+    const {value} = this.state;
     if (!(passwordRegex.test(this.state.value))) {
       this.setState({ errorMessage: "Password must be atleast of length 8" });
     }
@@ -22,12 +23,13 @@ class PasswordField extends React.Component {
   }
 
   render() {
+    const {errorMessage,value} = this.state;
     return (
       <React.Fragment>
         <TextField
           label={this.props.label}
           type="password"
-          value={this.state.value}
+          value={value}
           autoComplete="current-password"
           margin="normal"
           variant="outlined"
@@ -36,7 +38,7 @@ class PasswordField extends React.Component {
           onBlur={this.validationForPassword}
           onFocus={() => this.setState({ errorMessage: '' })}
         />
-        {this.state.errorMessage.length > 0 && <div style={{ color: 'red' }}> {this.state.errorMessage} </div>}
+        {errorMessage.length > 0 && <div style={{ color: 'red' }}> {errorMessage} </div>}
       </React.Fragment>
     );
   }
