@@ -1,9 +1,9 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import {passwordRegex} from '../config/Constants';
 
-const nameRegex = /^[a-z]+$/i ;
 
-class InputTextField extends React.Component {
+class PasswordField extends React.Component {
    state = {
        value:''
    }
@@ -13,25 +13,24 @@ class InputTextField extends React.Component {
    }
     
    focusForEveryInputElement = (event) => {
-    if(event.target.classList.contains("invalid")){
+    this.setState({errormessage:''});
+    if(event.target.classList.contains("invalid")) {
         this.setState({errormessage:''});
     }
    }
 
-    validationForName = () => {
-     if(!(nameRegex.test(this.state.value))){
-       if(!this.state.value){
-            this.forBlur("Please only enter alphabets");
-       }
-       else{
-            this.forBlur("Field must not be empty");
-       }
-     }
+   validationForPassword = () => {
+    if(!(passwordRegex.test(this.state.value))) {
+       this.forBlur("Password must be atleast of length 8");
     }
+    else{
+        this.props.methodToUpdateStateValue(this.props.nameOfStateProperty, this.state.value);
+    }
+   }
 
-    onInputChange = (event) => {
+    onInputForPassword = (event) => {
         this.setState({value:event.target.value});
-        if(!(nameRegex.test(this.state.value))){
+        if(!(passwordRegex.test(this.state.value))){
             event.target.classList.add('invalid');
         }
         else{
@@ -39,26 +38,25 @@ class InputTextField extends React.Component {
         }
     }
 
-    
     render() {
         return (
             <React.Fragment>
             <TextField
-               id="outlined-password-input"
-               label="Password"
+               label={this.props.label}
                type="password"
+               value={this.state.value}
                autoComplete="current-password"
                margin="normal"
                variant="outlined"
                style={{width:'100%'}}
-               onChange={this.onInputChange}
-               onBlur={this.validationForName}
+               onChange={this.onInputForPassword}
+               onBlur={this.validationForPassword}
                onFocus={this.focusForEveryInputElement}
             />
-               <div id='errorloginId' style={{color:'red'}}> {this.state.errormessage} </div>
+               <div style={{color:'red'}}> {this.state.errormessage} </div>
             </React.Fragment>
         );
     }
 }
 
-export default InputTextField;
+export default PasswordField;

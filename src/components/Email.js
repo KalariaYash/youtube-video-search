@@ -1,9 +1,8 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import {nameRegex} from '../config/Constants';
+import {emailRegex} from '../config/Constants';
 
-
-class InputTextField extends React.Component {
+class Email extends React.Component {
    state = {
        value:''
    }
@@ -18,31 +17,25 @@ class InputTextField extends React.Component {
         this.setState({errormessage:''});
     }
    }
-
-    validationForName = () => {
-     if(!(nameRegex.test(this.state.value))){
-       if(!(this.state.value == '')){
-            this.forBlur("Please only enter alphabets");
-       }
-       else{
-            this.forBlur("Field must not be empty");
-       }
-     }
-     else{
-         this.props.methodToUpdateStateValue(this.props.nameOfStateProperty, this.state.value);
-     }
+   validationForEmail = () => {
+    
+    if(!emailRegex.test(this.state.value)){
+        this.forBlur("Please enter valid email address")
     }
-
-    onInputChange = (event) => {
-        this.setState({value:event.target.value});
-        if(!(nameRegex.test(this.state.value))){
-            event.target.classList.add('invalid');
-        }
-        else{
-            event.target.classList.remove('invalid');
-        }
+    else{
+        this.props.methodToUpdateStateValue(this.props.nameOfStateProperty, this.state.value);
     }
+   }
 
+   onInputForEmail = (event) => {
+    this.setState({value:event.target.value});
+    if(!emailRegex.test(this.state.value)){
+        event.target.classList.add('invalid');
+    }
+    else{
+        event.target.classList.remove('invalid');
+    }
+   }
     
     render() {
         return (
@@ -53,8 +46,8 @@ class InputTextField extends React.Component {
                margin="normal"
                variant="outlined"
                style={{width:'100%'}}
-               onChange={this.onInputChange}
-               onBlur={this.validationForName}
+               onChange={this.onInputForEmail}
+               onBlur={this.validationForEmail}
                onFocus={this.focusForEveryInputElement}
                />
                <div style={{color:'red'}}> {this.state.errormessage} </div>
@@ -63,4 +56,4 @@ class InputTextField extends React.Component {
     }
 }
 
-export default InputTextField;
+export default Email;

@@ -1,32 +1,46 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import InputTextField from './InputTextField';
-import { red } from '@material-ui/core/colors';
+import SimpleButton from './SimpleButton';
 
 class Login extends React.Component {
-   state = { value:''}
-
-    onInputChange = (event) => {
-        this.setState({value:event.target.value})
+   state = { valueOfEmail:'',
+             valueOfPassword:'',
+             keepMeLoggedInFlag:false
+          }
+    checkCredentials = () => {
+        let temp = JSON.parse(localStorage.getItem('userData'));
+        if (temp['valueOfEmail'] == this.state.valueOfEmail && temp['valueOfPassword'] == this.state.valueOfPassword) {
+            console.log(this.state);
+            alert('login done');
+        }
+        else {
+            alert('Please enter valid email id and password');
+        }
     }
     render() {
         return (
             <form noValidate autoComplete="off"  >
-               <InputTextField label = 'Login ID' buttonName='login' id='loginId' />
+            <TextField
+               label='Email ID'
+               margin="normal"
+               variant="outlined"
+               style={{width:'100%'}}
+               value={this.state.value}
+               onChange={(event) => this.setState({valueOfEmail:event.target.value})}
+            />
                
-               <TextField
-               id="outlined-password-input"
+            <TextField
                label="Password"
                type="password"
                autoComplete="current-password"
                margin="normal"
                variant="outlined"
                style={{width:'100%'}}
-               />
-               <Button id="login" variant="outlined" color="primary" size="large" style={{margin:'16px 0px'}} className="Login">
-                Login
-               </Button>
+               value={this.state.value}
+               onChange={(event) => this.setState({valueOfPassword:event.target.value})}
+            />
+            <input type="checkbox" style={{margin:'16px 0px 8px 0px'}} onClick={() => this.setState({keepMeLoggedInFlag: !this.state.keepMeLoggedInFlag})} /> Keep me logged in<br/>
+            <SimpleButton label='Login' onClick={this.checkCredentials}/>
             </form>
         );
     }

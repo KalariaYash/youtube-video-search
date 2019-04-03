@@ -7,6 +7,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Login from '../components/Login';
+import Signup from '../components/Signup';
 
 function TabContainer({ children, dir }) {
   return (
@@ -45,7 +46,8 @@ class LoginOrSignup extends React.Component {
     const { classes, theme } = this.props;
 
     return (
-      <div className={classes.root} style={{ width:'30%', position:'absolute', top:'10%', left:'35%'}}>
+      <React.Fragment>
+      <div className={classes.root} style={{ width:'30%', position:'absolute', top:'10%', left:'35%', zIndex:'5'}}>
         <AppBar position="static" color="default">
           <Tabs
             value={this.state.value}
@@ -64,10 +66,11 @@ class LoginOrSignup extends React.Component {
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
-          <TabContainer dir={theme.direction}><Login/></TabContainer>
-          <TabContainer dir={theme.direction}><Login/></TabContainer>
+        {this.state.value === 0 && <TabContainer dir={theme.direction}><Login /></TabContainer>}
+        {this.state.value === 1 && <TabContainer dir={theme.direction}><Signup /></TabContainer>}
         </SwipeableViews>
       </div>
+      </React.Fragment>
     );
   }
 }

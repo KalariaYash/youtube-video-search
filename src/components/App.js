@@ -7,8 +7,7 @@ class App extends React.Component {
         return (
             <React.Fragment>
                <CssBaseline/>
-               <LoginOrSignup/>
-               <div>App</div>
+                 <LoginOrSignup/>
             </React.Fragment>
         );
     }
