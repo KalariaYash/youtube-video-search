@@ -1,7 +1,6 @@
 import React from 'react';
 import SimpleButton from '../components/SimpleButton';
-import PasswordField from '../components/PasswordField';
-import Email from '../components/Email';
+import InputField from '../components/InputField';
 
 class Login extends React.Component {
   state = {
@@ -30,8 +29,8 @@ class Login extends React.Component {
       <div style={{ width: '30%', position: 'absolute', top: '10%', left: '35%', zIndex: '5', backgroundColor: '(23,25,25)' }}>
         <h1>Login</h1>
         <form noValidate autoComplete="off"  >
-          <Email label='Email' updatUserInfo={this.updatUserInfo} nameOfStateProperty='email' />
-          <PasswordField label='Password' updatUserInfo={this.updatUserInfo} nameOfStateProperty='password' />
+          <InputField label='Email' updatUserInfo={this.updatUserInfo} nameOfStateProperty='email' type='email' />
+          <InputField label='Password' updatUserInfo={this.updatUserInfo} nameOfStateProperty='password' type='password' />
           <input type="checkbox" style={{ margin: '16px 0px 8px 0px' }} onClick={() => this.setState({ keepMeLoggedInFlag: !this.state.keepMeLoggedInFlag })} /> Keep me logged in<br />
           <SimpleButton label='Login' onClick={this.checkCredentials} />
         </form>
