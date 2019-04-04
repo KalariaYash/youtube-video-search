@@ -1,19 +1,28 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import { emailRegex } from '../config/Constants';
+import {inputInfo} from './Validation';
 
-class Email extends React.Component {
+class InputTextField extends React.Component {
   state = {
     value: '',
-    errorMessage:''
+    errorMessage: ''
   }
-  validationForEmail = () => {
-    const {value} = this.state;
-    if (!emailRegex.test(value)) {
-      this.setState({ errorMessage: "Please enter valid email address" });
+
+  checkValidation = () => {
+    const {type, updatUserInfo} = this.props;
+    const {regex, errorMessage} = inputInfo[type];
+    const{value} = this.state;
+
+    if (!(regex.test(value))) {
+      if (!(value == '')) {
+        this.setState({ errorMessage: errorMessage });
+      }
+      else {
+        this.setState({ errorMessage: "Field must not be empty" });
+      }
     }
     else {
-      this.props.updatUserInfo(this.props.nameOfStateProperty, value);
+      updatUserInfo(this.props.nameOfStateProperty, value);
     }
   }
 
@@ -23,12 +32,13 @@ class Email extends React.Component {
       <React.Fragment>
         <TextField
           label={this.props.label}
+          type={this.props.type}
           value={value}
           margin="normal"
           variant="outlined"
           style={{ width: '100%' }}
           onChange={(event) => this.setState({ value: event.target.value })}
-          onBlur={this.validationForEmail}
+          onBlur={this.checkValidation}
           onFocus={() => this.setState({ errorMessage: '' })}
         />
         {errorMessage.length > 0 && <div style={{ color: 'red' }}> {errorMessage} </div>}
@@ -37,4 +47,4 @@ class Email extends React.Component {
   }
 }
 
-export default Email;
+export default InputTextField;
