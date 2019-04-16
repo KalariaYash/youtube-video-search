@@ -1,10 +1,11 @@
 import React from 'react';
 import VideoListForAllPages from '../components/VideoListForAllPages';
 import { response } from '../config/Constants';
+import {getUserData, setUserData} from '../config/HelperFunctions';
 
 class History extends React.Component {
   state = {
-    videos: JSON.parse(localStorage.getItem('userData')).history,
+    videos: getUserData().history,
     selectedVideo: null,
     icon: 'remove'
   }
@@ -25,15 +26,15 @@ class History extends React.Component {
 
   onIconClickHandler = (video, icon) => {
     if (icon == 'remove') {
-      const temp = JSON.parse(localStorage.getItem('userData'));
+      const temp = getUserData();
       temp.history.splice(temp.history.findIndex(item => item.id.videoId == video.id.videoId), 1);
-      localStorage.setItem('userData', JSON.stringify(temp));
+      setUserData(temp);
       this.setState({ videos: temp.history });
     }
     else {
-      const temp = JSON.parse(localStorage.getItem('userData'));
+      const temp = getUserData();
       temp.watchLater.push(video);
-      localStorage.setItem('userData', JSON.stringify(temp));
+      setUserData(temp);
     }
   }
 

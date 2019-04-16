@@ -1,6 +1,7 @@
 import React from 'react';
 import SimpleButton from '../components/SimpleButton';
 import InputField from '../components/InputField';
+import { getUserData, setUserData } from '../config/HelperFunctions';
 
 class Login extends React.Component {
   state = {
@@ -17,9 +18,9 @@ class Login extends React.Component {
     this.setState({ keepMeLoggedInFlag: !this.state.keepMeLoggedInFlag });
   }
   checkCredentials = () => {
-    let temp = JSON.parse(localStorage.getItem('userData'));
+    let temp = getUserData();
     if (temp['email'] == this.state.email && temp['password'] == this.state.password) {
-      localStorage.setItem('userData', JSON.stringify(JSON.parse(localStorage.getItem('userData')).keepMeLoggedInFlag = this.state.keepMeLoggedInFlag));
+      setUserData(getUserData().keepMeLoggedInFlag = this.state.keepMeLoggedInFlag);
       this.props.history.push('/home');
 
     }
@@ -29,7 +30,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const temp = JSON.parse(localStorage.getItem('userData'));
+    const temp = getUserData();
 
     if (temp.keepMeLoggedInFlag == true) {
       this.props.history.push('/home');

@@ -1,6 +1,7 @@
 import React from 'react';
 import InputField from '../components/InputField';
 import SimpleButton from '../components/SimpleButton';
+import { setUserData } from '../config/HelperFunctions';
 
 class Signup extends React.Component {
 
@@ -25,7 +26,7 @@ class Signup extends React.Component {
       alert("Please fill the data correctly");
     }
     else {
-      localStorage.setItem('userData', JSON.stringify(this.state));
+      setUserData(this.state);
       this.props.history.push('/home');
     }
   }

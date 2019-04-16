@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { KEY } from './Constants';
+import { KEY, baseURL } from './Constants';
 
 export default axios.create({
-    baseURL: 'https://www.googleapis.com/youtube/v3',
+    baseURL: baseURL,
     params: {
         part: 'snippet',
         maxResults: 10,
-        key: KEY
+        key: process.env.REACT_APP_KEY
     }
 });

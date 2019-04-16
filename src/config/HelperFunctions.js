@@ -10,4 +10,12 @@ async function onSearchSubmit(term) {
    return response;
 }
 
-export default onSearchSubmit;
+function getUserData() {
+   return JSON.parse(localStorage.getItem('userData'));
+}
+
+function setUserData(data) {
+   localStorage.setItem('userData', JSON.stringify(data));
+}
+
+export {onSearchSubmit, getUserData, setUserData};

@@ -1,11 +1,12 @@
 import React from 'react';
 import VideoListForAllPages from '../components/VideoListForAllPages';
 import { response } from '../config/Constants';
+import {getUserData, setUserData} from '../config/HelperFunctions';
 
 
 class WatchLater extends React.Component {
   state = {
-    videos: JSON.parse(localStorage.getItem('userData')).watchLater,
+    videos: getUserData().watchLater,
     selectedVideo: null,
     icon: 'remove'
   }
@@ -21,20 +22,23 @@ class WatchLater extends React.Component {
   }
 
   onVideoSelect = (video, videos) => {
+    const temp = getUserData();
+    temp.history.push(video);
+    setUserData(temp);
     this.setState({ selectedVideo: video });
   }
 
   onIconClickHandler = (video, icon) => {
     if (icon == 'remove') {
-      const temp = JSON.parse(localStorage.getItem('userData'));
+      const temp = getUserData();
       temp.watchLater.splice(temp.watchLater.findIndex(item => item.id.videoId == video.id.videoId), 1);
-      localStorage.setItem('userData', JSON.stringify(temp));
+      setUserData(temp);
       this.setState({ videos: temp.watchLater });
     }
     else {
-      const temp = JSON.parse(localStorage.getItem('userData'));
+      const temp = getUserData();
       temp.watchLater.push(video);
-      localStorage.setItem('userData', JSON.stringify(temp));
+      setUserData(temp);
     }
   }
 

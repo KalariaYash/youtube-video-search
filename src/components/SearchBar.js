@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import LogoutIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import { Link } from 'react-router-dom';
+import {getUserData, setUserData} from '../config/HelperFunctions';
 
 const styles = theme => ({
   root: {
@@ -69,9 +70,9 @@ class SearchBar extends React.Component {
   }
 
   onClickLogOut = () => {
-    const temp = JSON.parse(localStorage.getItem('userData'));
+    const temp = getUserData();
     temp.keepMeLoggedInFlag = false;
-    localStorage.setItem('userData', JSON.stringify(temp));
+    setUserData(temp);
   }
 
   render() {

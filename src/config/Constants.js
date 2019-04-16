@@ -4,6 +4,8 @@ export const passwordRegex = /^[\S]{8,}$/;
 export const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //export const KEY = 'AIzaSyCjgxwU5P7sYX1cSopF5N4CcXKxlstbQXA';
 export const KEY = 'AIzaSyAJZsks_t02ZRf9B4v8WGSCVS32HC0ufb0';
+export const baseURL = 'https://www.googleapis.com/youtube/v3';
+export const categoryNames = ['Movies', 'Music', 'Game', 'Funny Videos', 'Series'];
 
 export const response = {
        "kind": "youtube#searchListResponse",
