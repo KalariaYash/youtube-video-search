@@ -6,10 +6,10 @@ import LeftMenuPane from '../components/LeftMenuPane';
 import CategoryGrid from '../components/CategoryGrid';
 import { response } from '../config/Constants';
 import VideoListForAllPages from '../components/VideoListForAllPages';
-import {onSearchSubmit, getUserData, setUserData} from '../config/HelperFunctions';
+import { onSearchSubmit, getUserData, setUserData } from '../config/HelperFunctions';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {categoryNames} from '../config/Constants';
+import { categoryNames } from '../config/Constants';
 import Paper from '@material-ui/core/Paper';
 
 class Home extends React.Component {
@@ -53,8 +53,6 @@ class Home extends React.Component {
       xsOfVideoDetail = 0;
       xsOfVideoList = 10;
     }
-    console.log(process.env.REACT_APP_SECRET_KEY);
-
 
     if (this.state.videos[0] == undefined && this.state.selectedVideo == null) {
       return (
@@ -65,11 +63,11 @@ class Home extends React.Component {
               <LeftMenuPane />
             </Grid>
             <Grid item xs={10} className='videoDetail' style={{ position: 'relative' }}  >
-            <Paper style={{padding:'0px', margin:'0px'}}>
-            {categoryNames.map(categoryName => (
-              <CategoryGrid category={categoryName} onVideoSelect={this.onVideoSelect} onIconClickHandler={this.onIconClickHandler} />
-            ))}
-            </Paper>
+              <Paper style={{ padding: '0px', margin: '0px' }}>
+                {categoryNames.map(categoryName => (
+                  <CategoryGrid category={categoryName} onVideoSelect={this.onVideoSelect} onIconClickHandler={this.onIconClickHandler} />
+                ))}
+              </Paper>
             </Grid>
           </Grid>
         </React.Fragment>);
