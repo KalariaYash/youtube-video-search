@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import validationSchema from './ValidationSchema';
+import validationSchema from '../config/ValidationSchema';
 
 class InputTextField extends React.Component {
   state = {
@@ -9,9 +9,9 @@ class InputTextField extends React.Component {
   }
 
   checkValidation = () => {
-    const {type, updatUserInfo} = this.props;
-    const {regex, errorMessage} = validationSchema[type];
-    const{value} = this.state;
+    const { type, updatUserInfo } = this.props;
+    const { regex, errorMessage } = validationSchema[type];
+    const { value } = this.state;
 
     if (!(regex.test(value))) {
       if (!(value == '')) {
@@ -27,7 +27,7 @@ class InputTextField extends React.Component {
   }
 
   render() {
-    const {errorMessage,value} = this.state;
+    const { errorMessage, value } = this.state;
     return (
       <React.Fragment>
         <TextField
