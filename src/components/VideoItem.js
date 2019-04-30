@@ -22,7 +22,7 @@ const styles = theme => ({
   icon: {},
 });
 
-const VideoItem = ({ video, onVideoSelect, videos, onIconClickHandler, icon, classes }) => {
+const VideoItem = ({ video, onVideoSelect, onIconClickHandler, videos, icon, classes }) => {
 
   return (<div className={classes.root}>
     <ListItem className={classes.listItem} style={{ maxHeight: '100px' }} button>

@@ -2,6 +2,7 @@ import React from 'react';
 import Router from './router/Router';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
+import { ToastContainer } from 'react-toastify';
 
 const theme = createMuiTheme({
   palette: {
@@ -21,6 +22,7 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <Router />
+        <ToastContainer className='toast-container' style={{ backgroundColor: '(0,0,0)' }} />
       </MuiThemeProvider>
 
     );

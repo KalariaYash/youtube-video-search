@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper/Paper';
 import LeftMenuPane from './LeftMenuPane';
 
-const VideoListForAllPages = ({ onTermSubmit, xsOfVideoDetail, xsOfVideoList, selectedVideo, onVideoSelect, videos, onIconClickHandler, icon }) => {
+const VideoListForAllPages = ({ onTermSubmit, xsOfVideoDetail, onIconClickHandler, xsOfVideoList, videos, onVideoSelect, icon }) => {
   return (
     <React.Fragment>
       <SearchBar onTermSubmit={onTermSubmit} />
@@ -15,10 +15,10 @@ const VideoListForAllPages = ({ onTermSubmit, xsOfVideoDetail, xsOfVideoList, se
           <LeftMenuPane />
         </Grid>
         <Grid item xs={xsOfVideoDetail} className='videoDetail' style={{ position: 'relative' }} >
-          <VideoDetail video={selectedVideo} />
+          <VideoDetail />
         </Grid>
         <Grid item xs={xsOfVideoList} >
-          <Paper style={{ position: 'relative' }}><VideoList onVideoSelect={onVideoSelect} videos={videos} onIconClickHandler={onIconClickHandler} icon={icon} /></Paper>
+          <Paper style={{ position: 'relative', margin: '0px', padding: '0px' }}><VideoList onVideoSelect={onVideoSelect} videos={videos} onIconClickHandler={onIconClickHandler} icon={icon} /></Paper>
         </Grid>
       </Grid>
     </React.Fragment>

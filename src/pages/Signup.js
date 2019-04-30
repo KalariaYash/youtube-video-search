@@ -1,32 +1,41 @@
 import React from 'react';
 import InputField from '../components/InputField';
 import SimpleButton from '../components/SimpleButton';
-import { setUserData } from '../config/HelperFunctions';
+import { connect } from 'react-redux';
+import { signUp } from '../actions/actionCreaters';
+import { label } from '../config/Constants';
+import { notificationError, notificationSuccess, notificationWarn } from '../components/toastMessage';
+
+const userData = {
+  firstName: '',
+  middleName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  watchLater: [],
+  history: [],
+  keepMeLoggedInFlag: true,
+};
 
 class Signup extends React.Component {
-
-  state = {
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    watchLater: [],
-    history: [],
-    keepMeLoggedInFlag: false
-  };
+  componentWillMount() {
+    if (this.props.userData != null ? this.props.userData.keepMeLoggedInFlag == true : false) {
+      this.props.history.push('/home');
+    }
+  }
 
   updatUserInfo = (varName, value) => {
-    this.setState({ [varName]: value });
+    userData[varName] = value;
   }
 
   handleOnSubmit = () => {
-    const { firstName, middleName, lastName, email, password } = this.state;
+    const { firstName, middleName, lastName, email, password } = userData;
     if (firstName == '' || middleName == '' || lastName == '' || email == '' || password == '') {
-      alert("Please fill the data correctly");
+      notificationError(label.signupValidationMsg);
     }
     else {
-      setUserData(this.state);
+      notificationError(label.signUpSuccess);
+      this.props.signUp(userData);
       this.props.history.push('/home');
     }
   }
@@ -41,7 +50,6 @@ class Signup extends React.Component {
           <InputField label='Last Name' updatUserInfo={this.updatUserInfo} nameOfStateProperty='lastName' type='text' />
           <InputField label='Email' updatUserInfo={this.updatUserInfo} nameOfStateProperty='email' type='email' />
           <InputField label='Password' updatUserInfo={this.updatUserInfo} nameOfStateProperty='password' type='password' />
-          <input type="checkbox" style={{ margin: '16px 0px 8px 0px' }} onClick={() => this.setState({ keepMeLoggedInFlag: !this.state.keepMeLoggedInFlag })} /> Keep me logged in<br />
           <SimpleButton label='Sign Up' onClick={this.handleOnSubmit} />
         </form>
       </div>
@@ -49,4 +57,6 @@ class Signup extends React.Component {
   }
 }
 
-export default Signup;
+const mapStateToProps = state => { return { userData: state.userData }; };
+
+export default connect(mapStateToProps, { signUp })(Signup);
