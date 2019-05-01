@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { KEY, baseURL } from './Constants';
+import { baseURL } from './Constants';
 
 export default axios.create({
     baseURL: baseURL,

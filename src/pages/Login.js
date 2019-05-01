@@ -1,38 +1,39 @@
 import React from 'react';
 import SimpleButton from '../components/SimpleButton';
 import InputField from '../components/InputField';
-import { getUserData, setUserData } from '../config/HelperFunctions';
+import { connect } from 'react-redux';
+import { signUp } from '../actions/actionCreaters';
+import { label } from '../config/Constants';
+import { notificationError, notificationSuccess, notificationWarn } from '../components/toastMessage';
+
+const temp = {
+  email: '',
+  password: '',
+  keepMeLoggedInFlag: false
+}
 
 class Login extends React.Component {
-  state = {
-    email: '',
-    password: '',
-    keepMeLoggedInFlag: false
-  }
-
   updatUserInfo = (varName, value) => {
-    this.setState({ [varName]: value });
+    temp[varName] = value;
   }
 
-  updateFlag = () => {
-    this.setState({ keepMeLoggedInFlag: !this.state.keepMeLoggedInFlag });
-  }
   checkCredentials = () => {
-    let temp = getUserData();
-    if (temp['email'] == this.state.email && temp['password'] == this.state.password) {
-      setUserData(getUserData().keepMeLoggedInFlag = this.state.keepMeLoggedInFlag);
+    let { userData } = this.props;
+    if (userData['email'] == temp.email && userData['password'] == temp.password) {
+      userData.keepMeLoggedInFlag = true;
+      notificationError(label.loginSuccessful);
+      this.props.signUp(userData);
       this.props.history.push('/home');
-
     }
     else {
-      alert('Please enter valid email id and password');
+      notificationError(label.loginValidationMsg);
     }
   }
 
   render() {
-    const temp = getUserData();
+    const { userData } = this.props;
 
-    if (temp.keepMeLoggedInFlag == true) {
+    if (userData != null && userData.keepMeLoggedInFlag === true) {
       this.props.history.push('/home');
     }
 
@@ -42,13 +43,15 @@ class Login extends React.Component {
         <form noValidate autoComplete="off"  >
           <InputField label='Email' updatUserInfo={this.updatUserInfo} nameOfStateProperty='email' type='email' />
           <InputField label='Password' updatUserInfo={this.updatUserInfo} nameOfStateProperty='password' type='password' />
-          <input type="checkbox" style={{ margin: '16px 0px 8px 0px' }} onClick={this.updateFlag} /> Keep me logged in<br />
+          <br />
           <SimpleButton label='Login' onClick={this.checkCredentials} />
         </form>
         <a href='/signup'>New to our Website? Sign Up!</a>
       </div>
     );
-
   }
 }
-export default Login;
+
+const mapStateToProps = state => { return { userData: state.userData }; };
+
+export default connect(mapStateToProps, { signUp })(Login);

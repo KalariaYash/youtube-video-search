@@ -1,58 +1,75 @@
 import React from 'react';
 import VideoListForAllPages from '../components/VideoListForAllPages';
-import { response } from '../config/Constants';
-import {getUserData, setUserData} from '../config/HelperFunctions';
-
+import { connect } from 'react-redux';
+import { fetchVideos, selectVideo, addToHistory, addToWatchlater, signUp } from '../actions/actionCreaters';
+import { label } from '../config/Constants';
+import { notificationError, notificationSuccess, notificationWarn } from '../components/toastMessage';
 
 class WatchLater extends React.Component {
   state = {
-    videos: getUserData().watchLater,
-    selectedVideo: null,
     icon: 'remove'
   }
 
-  onTermSubmit = async (term) => {
-    // const response = await AxiosConfig.get('/search', {
-    //   params: {
-    //     q: term
-    //   }
-    // })
+  componentWillMount() {
+    if (this.props.userData != null ? this.props.userData.keepMeLoggedInFlag === false : true) {
+      notificationError(label.loginFirst);
+      this.props.history.push('/');
+    }
+  }
 
-    this.setState({ videos: response.items, selectedVideo: null, icon: 'watchLater' });
+  onTermSubmit = async (term) => {
+    this.props.fetchVideos(term);
+    this.props.selectVideo(null);
+    this.setState({ icon: 'watchLater' })
   }
 
   onVideoSelect = (video, videos) => {
-    const temp = getUserData();
-    temp.history.push(video);
-    setUserData(temp);
-    this.setState({ selectedVideo: video });
+    this.props.addToHistory(video);
+    this.props.selectVideo(video);
+    this.props.fetchVideos(videos);
   }
 
   onIconClickHandler = (video, icon) => {
+    const temp = this.props.userData;
     if (icon == 'remove') {
-      const temp = getUserData();
+      notificationError(label.removeFromWatchLater);
       temp.watchLater.splice(temp.watchLater.findIndex(item => item.id.videoId == video.id.videoId), 1);
-      setUserData(temp);
-      this.setState({ videos: temp.watchLater });
+      this.props.signUp(temp);
     }
     else {
-      const temp = getUserData();
-      temp.watchLater.push(video);
-      setUserData(temp);
+      notificationError(label.addToWatchLater);
+      this.props.addToWatchlater(video);
     }
   }
 
   render() {
     let xsOfVideoDetail = 7;
     let xsOfVideoList = 3;
-    if (!this.state.selectedVideo) {
+    if (!this.props.selectedVideo) {
       xsOfVideoDetail = 0;
       xsOfVideoList = 10;
     }
+
+    if (this.props.searchVideos[0] !== undefined) {
+      return (
+        <VideoListForAllPages videos={this.props.searchVideos} selectedVideo={this.props.selectedVideo} onTermSubmit={this.onTermSubmit} onVideoSelect={this.onVideoSelect} xsOfVideoDetail={xsOfVideoDetail} xsOfVideoList={xsOfVideoList} icon={this.state.icon} onIconClickHandler={this.onIconClickHandler} />
+      )
+    }
     return (
-      <VideoListForAllPages videos={this.state.videos} selectedVideo={this.state.selectedVideo} onTermSubmit={this.onTermSubmit} onVideoSelect={this.onVideoSelect} xsOfVideoDetail={xsOfVideoDetail} xsOfVideoList={xsOfVideoList} icon={this.state.icon} onIconClickHandler={this.onIconClickHandler} />
+      <VideoListForAllPages videos={this.props.videos} selectedVideo={this.props.selectedVideo} onTermSubmit={this.onTermSubmit} onVideoSelect={this.onVideoSelect} xsOfVideoDetail={xsOfVideoDetail} xsOfVideoList={xsOfVideoList} icon={this.state.icon} onIconClickHandler={this.onIconClickHandler} />
     )
   }
 }
 
-export default WatchLater;
+const mapStateToProps = state => {
+  return {
+    userData: state.userData,
+    videos: state.userData.watchLater,
+    selectedVideo: state.selectedVideo,
+    searchVideos: state.videos
+  };
+};
+
+const mapDispatchToProps = { selectVideo, fetchVideos, addToHistory, addToWatchlater, signUp };
+
+export default connect(mapStateToProps, mapDispatchToProps)(WatchLater);

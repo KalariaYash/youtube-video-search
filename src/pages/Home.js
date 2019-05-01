@@ -1,60 +1,50 @@
 import SearchBar from '../components/SearchBar';
 import React from 'react';
-import AxiosConfig from '../config/AxiosConfig';
 import Grid from '@material-ui/core/Grid';
 import LeftMenuPane from '../components/LeftMenuPane';
 import CategoryGrid from '../components/CategoryGrid';
-import { response } from '../config/Constants';
 import VideoListForAllPages from '../components/VideoListForAllPages';
-import { onSearchSubmit, getUserData, setUserData } from '../config/HelperFunctions';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { categoryNames } from '../config/Constants';
+import { categoryNames,label } from '../config/Constants';
 import Paper from '@material-ui/core/Paper';
+import { connect } from 'react-redux';
+import { fetchVideos, selectVideo, addToHistory, addToWatchlater } from '../actions/actionCreaters';
+import { notificationError, notificationSuccess, notificationWarn } from '../components/toastMessage';
 
 class Home extends React.Component {
-  state = { videos: [], selectedVideo: null }
-
-  onTermSubmit = (term) => {
-    // const response = await AxiosConfig.get('/search', {
-    //   params: {
-    //     q: term
-    //   }
-    // })
-
-    this.setState({ videos: response.items, selectedVideo: null });
-
-    // console.log(this.state);
-    // onSearchSubmit(term).then(response => {
-    //   this.setState({
-    //      videos: response.items
-    //   });
-
-    // });
+  componentWillMount() {
+    if (this.props.userData != null ? this.props.userData.keepMeLoggedInFlag === false : true) {
+      notificationError(label.loginFirst);
+      this.props.history.push('/');
+    }
   }
 
-  onVideoSelect = (video, videos) => {
-    const temp = getUserData();
-    temp.history.push(video);
-    setUserData(temp);
-    this.setState({ selectedVideo: video, videos: videos });
+  onTermSubmit = (term) => {
+    this.props.fetchVideos(term);
+    this.props.selectVideo(null);
   }
 
   onIconClickHandler = (video) => {
-    const temp = getUserData();
-    temp.watchLater.push(video);
-    setUserData(temp);
+    notificationError(label.addToWatchLater);
+    this.props.addToWatchlater(video);
+  }
+
+  onVideoSelect = (video, videos) => {
+    this.props.addToHistory(video);
+    this.props.selectVideo(video);
+    this.props.fetchVideos(videos);
   }
 
   render() {
+    const { videos, selectedVideo } = this.props;
     let xsOfVideoDetail = 7;
     let xsOfVideoList = 3;
-    if (!this.state.selectedVideo) {
+    if (!selectedVideo) {
       xsOfVideoDetail = 0;
       xsOfVideoList = 10;
     }
 
-    if (this.state.videos[0] == undefined && this.state.selectedVideo == null) {
+    if (videos[0] === undefined && selectedVideo === null) {
       return (
         <React.Fragment>
           <SearchBar onTermSubmit={this.onTermSubmit} />
@@ -74,13 +64,22 @@ class Home extends React.Component {
     }
 
     return (
-      <VideoListForAllPages videos={this.state.videos} selectedVideo={this.state.selectedVideo} onTermSubmit={this.onTermSubmit} onVideoSelect={this.onVideoSelect} xsOfVideoDetail={xsOfVideoDetail} xsOfVideoList={xsOfVideoList} icon='watchLater' onIconClickHandler={this.onIconClickHandler} />
+      <VideoListForAllPages onTermSubmit={this.onTermSubmit} videos={videos} onVideoSelect={this.onVideoSelect} onIconClickHandler={this.onIconClickHandler} xsOfVideoDetail={xsOfVideoDetail} xsOfVideoList={xsOfVideoList} icon='watchLater' />
     )
   }
-
 }
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles()(Home);
+const mapStateToProps = state => {
+  return {
+    userData: state.userData,
+    videos: state.videos,
+    selectedVideo: state.selectedVideo
+  };
+};
+
+const mapDispatchToProps = { selectVideo, fetchVideos, addToHistory, addToWatchlater };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

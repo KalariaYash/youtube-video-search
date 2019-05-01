@@ -1,13 +1,14 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
 
-const VideoDetail = ({ video }) => {
-  if (!video) {
+const VideoDetail = ({ selectedVideo }) => {
+  if (!selectedVideo) {
     return <div></div>
   }
 
-  const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`;
+  const videoSrc = `https://www.youtube.com/embed/${selectedVideo.id.videoId}`;
 
   return (
     <div style={{ padding: '0px', width: '100%', height: '100%' }}>
@@ -16,14 +17,16 @@ const VideoDetail = ({ video }) => {
       </Paper>
       <Paper style={{ padding: '10px' }} className='timepass'>
         <Typography variant="h5" component="h2">
-          {video.snippet.title}
+          {selectedVideo.snippet.title}
         </Typography>
         <Typography component="p">
-          {video.snippet.description}
+          {selectedVideo.snippet.description}
         </Typography>
       </Paper>
     </div>
   )
 }
 
-export default VideoDetail;
+const mapStateToProps = state => { return { selectedVideo: state.selectedVideo }; };
+
+export default connect(mapStateToProps, null)(VideoDetail);

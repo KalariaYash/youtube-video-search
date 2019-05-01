@@ -9,7 +9,8 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import LogoutIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import { Link } from 'react-router-dom';
-import {getUserData, setUserData} from '../config/HelperFunctions';
+import { connect } from 'react-redux';
+import { signUp } from '../actions/actionCreaters';
 
 const styles = theme => ({
   root: {
@@ -70,15 +71,14 @@ class SearchBar extends React.Component {
   }
 
   onClickLogOut = () => {
-    const temp = getUserData();
-    temp.keepMeLoggedInFlag = false;
-    setUserData(temp);
+    let { userData } = this.props;
+    userData.keepMeLoggedInFlag = false;
+    this.props.signUp(userData);
   }
 
   render() {
     const { classes } = this.props;
     return (
-
       <AppBar position="static" style={{ margin: '0px', padding: '0px', position: 'fixed', top: '0', left: '0' }} >
         <Toolbar style={{ margin: '0px' }}>
 
@@ -105,9 +105,10 @@ class SearchBar extends React.Component {
 
         </Toolbar>
       </AppBar>
-
     );
   }
 }
 
-export default withStyles(styles)(SearchBar);
+const mapStateToProps = state => { return { userData: state.userData }; };
+
+export default withStyles(styles)(connect(mapStateToProps, { signUp })(SearchBar));
