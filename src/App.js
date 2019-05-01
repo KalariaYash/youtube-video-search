@@ -12,10 +12,21 @@ const theme = createMuiTheme({
     },
     secondary: green,
   },
-  status: {
-    danger: 'orange',
-  },
 });
+
+// const theme = createMuiTheme({
+//   palette: {
+//     type: 'dark',
+//     primary: {
+//       main: '#212121',
+//       dark: '#212121'
+//     },
+//     secondary: {
+//       main: '#212121',
+//       dark: '#212121'
+//     }
+//   },
+// });
 
 class App extends React.Component {
   render() {

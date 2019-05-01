@@ -5,9 +5,9 @@
   --bg-tint-angle: to bottom left;
   --bg-tint-start: 70%;
   --bg-shade-angle: 80deg;
-  --bg-color: hsl(195, 52%, 31%);
+  /* --bg-color: hsl(195, 52%, 31%);
   --bg-tint: hsla(9, 100%, 64%, 1);
-  --bg-shade: hsla(330, 100%, 45%, 0.75);
+  --bg-shade: hsla(330, 100%, 45%, 0.75); */
   --mia-hue: 330;
   --mia-color: hsl(330, 100%, 29%);
 }
